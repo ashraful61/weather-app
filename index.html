@@ -28,7 +28,7 @@
                 <input type="text" id="search-city" class="form-control" placeholder="Enter a location for Weather ...">
                 <div class="input-group-append">
                     <button id="search-btn" type="button" class="btn btn-danger"
-                        onclick="showWeatcher()">Search</button>
+                        onclick="showWeather()">Search</button>
                 </div>
             </div>
         </div>
@@ -41,11 +41,11 @@
         </div>
     </div>
     <script>
-        //By defailt Dhaka city weather will show
+        //By default Dhaka city weather will show
         getInputWeatherCity()
 
         //Search button Event Handler
-        function showWeatcher() {
+        function showWeather() {
             console.log('search button clicked')
             const searchCity = document.getElementById('search-city')
             console.log(searchCity.value)
@@ -59,8 +59,9 @@
 
         //Get input city
         function getInputWeatherCity(city) {
-            var city_name = city ? city : 'Dhaka'
-            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=7ee9b8c6aa22381201ce9ff5258213c7`)
+            const city_name = city ? city : 'Dhaka'
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city_name}&appid=7ee9b8c6aa22381201ce9ff5258213c7`
+                 fetch(url)
                 .then(res => res.json())
                 .then(result => {
                     calculateWeather(result)
@@ -71,18 +72,18 @@
 
         }
 
-        //Calculate Weatcher from kelvin to celcius
+        //Calculate Weather from kelvin to celsius
         function calculateWeather(result) {
             console.log('result', result)
 
             if (result.cod == 200) {
                 const cityName = result.name
-                var celcius = parseFloat(result.main.temp) - 273.15;
+                const celsius = parseFloat(result.main.temp) - 273.15;
 
                 // console.log(`https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`)
                 document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${result.weather[0].icon}@2x.png`
                 document.getElementById('city-name').innerText = cityName
-                document.getElementById('weather-temperature').innerText = celcius.toFixed(2)
+                document.getElementById('weather-temperature').innerText = celsius.toFixed(2)
                 document.getElementById('weather-condition').innerHTML = result.weather[0].main
             }
 
@@ -94,8 +95,11 @@
           //Input field enter key event handler
         document.getElementById('search-city').addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
-                event.preventDefault();
-                document.getElementById("search-btn").click();
+                // event.preventDefault();
+                // option 1
+                // document.getElementById("search-btn").click();
+                // option 2
+                showWeather()
             }
         });
 
